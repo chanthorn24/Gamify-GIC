@@ -127,6 +127,8 @@ export default {
               console.log(res);
               if (res.data.success) {
                 sessionStorage.setItem("token", res.data.data);
+                sessionStorage.setItem("user", JSON.stringify(res.data.user));
+
                 document.location.reload();
                 setInterval(() => {
                   router.push({ path: "/" });
