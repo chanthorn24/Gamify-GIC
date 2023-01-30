@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h3 style="text-align: center; color: orange; text-decoration: underline">
+      Average Answer(s)
+    </h3>
     <apexchart
       type="pie"
       style="max-width: 625px"

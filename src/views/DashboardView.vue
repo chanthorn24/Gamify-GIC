@@ -28,7 +28,9 @@
               <div style="font-size: x-large; font-weight: 500; color: #0999ad">
                 Total Teacher(s)
               </div>
-              <h1 style="color: #66bb6a">10</h1>
+              <h1 style="color: #66bb6a">
+                {{ numOfTeacher.toString().padStart(2, "0") }}
+              </h1>
             </div>
           </div>
           <div class="my-2 pr-10">
@@ -57,7 +59,9 @@
               <div style="font-size: x-large; font-weight: 500; color: #0999ad">
                 Quiz Room(s)
               </div>
-              <h1 style="color: #7e57c2">10</h1>
+              <h1 style="color: #7e57c2">
+                {{ numOfRoom.toString().padStart(2, "0") }}
+              </h1>
             </div>
           </div>
           <div class="my-2 pr-10">
@@ -86,7 +90,9 @@
               <div style="font-size: x-large; font-weight: 500; color: #0999ad">
                 Department(s)
               </div>
-              <h1 style="color: #1e88e5">10</h1>
+              <h1 style="color: #1e88e5">
+                {{ numOfDeparment.toString().padStart(2, "0") }}
+              </h1>
             </div>
           </div>
           <div class="my-2 pr-10">
@@ -115,7 +121,9 @@
               <div style="font-size: x-large; font-weight: 500; color: #0999ad">
                 Global User(s)
               </div>
-              <h1 style="color: orange">10</h1>
+              <h1 style="color: orange">
+                {{ numOfGlobal.toString().padStart(2, "0") }}
+              </h1>
             </div>
           </div>
           <div class="my-2 pr-10">
@@ -128,7 +136,7 @@
     </v-row>
 
     <!-- Chart -->
-    <v-row class="mt-6">
+    <v-row>
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-card class="pa-2" outlined elevation="1">
           <ColumnChart></ColumnChart>
@@ -144,9 +152,12 @@
 </template>
 
 <script>
+import decode from "vue-jwt-decode";
 import { mapActions } from "vuex";
 import ColumnChart from "../components/charts/ColumnChart.vue";
 import PieChart from "../components/charts/PieChart.vue";
+
+import io from "socket.io-client";
 
 export default {
   components: {
@@ -154,24 +165,85 @@ export default {
     PieChart,
   },
   data() {
-    return {};
+    return {
+      numOfTeacher: 0,
+      numOfRoom: 0,
+      numOfDeparment: 0,
+      numOfGlobal: 0,
+    };
   },
 
   methods: {
     ...mapActions(["showSnack"]),
-    saveDetails() {
-      console.log("hello");
+    saveDetails(text, color, progressColor) {
       this.showSnack({
-        text: "Successfully Saved!",
-        color: "success",
-        progressColor: "#A5D6A7",
+        text: text,
+        color: color,
+        progressColor: progressColor,
         // color: "error",
         // color: "warning",
         timeout: 3500,
       });
     },
+
+    getTeacher() {
+      this.axios
+        .get(this.$url + "/user/get-all")
+        .then((res) => {
+          if (res.data.success) {
+            this.numOfTeacher = res.data.data.length;
+          }
+        })
+        .catch((error) => {
+          //snackbar error
+          this.saveDetails(error.message, "error", "#EF9A9A");
+        });
+    },
+
+    getRoom() {
+      this.decoder = decode.decode(sessionStorage.getItem("token"));
+      this.axios
+        .get(this.$url + "/room/get/by/" + this.decoder.data.user.id)
+        .then((res) => {
+          if (res.data.success) {
+            this.numOfRoom = res.data.data.length;
+          }
+        })
+        .catch((error) => {
+          //snackbar error
+          this.saveDetails(error.message, "error", "#EF9A9A");
+        });
+    },
+
+    getDepartment() {
+      this.axios
+        .get(this.$url + "/department/get-all")
+        .then((res) => {
+          if (res.data.success) {
+            this.numOfDeparment = res.data.data.length;
+          }
+        })
+        .catch((error) => {
+          //snackbar error
+          this.saveDetails(error.message, "error", "#EF9A9A");
+        });
+    },
+
+    initialize() {
+      this.socket.emit("global_user", "");
+    },
   },
-  created() {},
+  created() {
+    this.getTeacher();
+    this.getRoom();
+    this.getDepartment();
+
+    this.socket = io("http://localhost:3001/", { transports: ["websocket"] });
+    this.socket.on("global_user", (msg) => {
+      this.numOfGlobal = msg.length;
+    });
+    this.initialize();
+  },
 };
 </script>
 

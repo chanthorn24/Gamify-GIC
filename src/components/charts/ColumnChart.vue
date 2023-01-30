@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h3 style="text-align: center; color: orange; text-decoration: underline">
+      Monthly Global User(s)
+    </h3>
     <apexchart
       type="bar"
       style="max-width: 775px"

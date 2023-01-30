@@ -80,9 +80,8 @@ export default {
   },
 
   created() {
-    setInterval(() => {
-      this.dialog = true;
-    }, 1000);
+    this.dialog = true;
+
     this.socket = io("http://localhost:3001/", { transports: ["websocket"] });
     this.socket.on("in_room", (msg) => {
       console.log(msg, "msg Parent");
@@ -98,6 +97,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.socket.emit("in_room", this.user);
+        this.socket.emit("global_user", "");
         this.dialog = false;
       }
     },
