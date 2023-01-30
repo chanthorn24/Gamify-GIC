@@ -92,6 +92,12 @@
           </v-list-item-icon>
           <v-list-item-title>Change password</v-list-item-title>
         </v-list-item>
+        <v-list-item to="/editaccount" link>
+          <v-list-item-icon style="margin-right: 10px">
+            <v-icon size="20px">mdi-information-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Edit Account</v-list-item-title>
+        </v-list-item>
       </v-list-group>
     </v-list>
   </v-card>
