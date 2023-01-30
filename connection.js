@@ -154,6 +154,15 @@ const connect = (socket) => {
             io.io.emit("play", data);
         }
     });
+
+    //global user join room
+    socket.on("global_user", () => {
+        axios.get(url + "/user/in-room/get-all").then((res) => {
+            if (res.data.success) {
+                io.io.emit("global_user", res.data.data);
+            }
+        });
+    });
 };
 
 module.exports = { connect };
