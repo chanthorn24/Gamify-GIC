@@ -58,13 +58,6 @@
             readonly
             disabled
           ></v-text-field>
-
-          <v-text-field
-            v-model="userInfo.phone"
-            outlined
-            label="Phone"
-            clearable
-          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -76,14 +69,18 @@
 </template>
   
   <style scoped>
-.btn {
-  left: 20%;
-  width: 7%;
-}
+    .btn {
+        left: 65%;
+        width: 6%;
+    }
 
-.v-text-field--outlined >>> fieldset {
-  border-color: rgb(22, 153, 171);
-}
+    .v-text-field--outlined >>> fieldset {
+        border-color: rgb(22, 153, 171);
+    }
+
+    .v-text-field--outlined {
+        width: 70%;
+    }
 </style>
   
   <script>

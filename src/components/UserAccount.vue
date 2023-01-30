@@ -28,7 +28,7 @@
             {{ user.email }}
           </p>
           <v-divider class="my-3"></v-divider>
-          <v-btn depressed rounded text> Edit Account </v-btn>
+          <v-btn depressed rounded text to="/editaccount" link>Edit Account</v-btn>
           <v-divider class="my-3"></v-divider>
           <v-btn depressed rounded text @click="logOut()"> Log out </v-btn>
         </div>
@@ -65,4 +65,8 @@ export default {
 .v-menu__content {
   margin-left: 20%;
 }
+// .edit {
+//   text-decoration: none;
+//   color: black;
+// }
 </style>
