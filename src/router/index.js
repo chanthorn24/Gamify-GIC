@@ -169,6 +169,21 @@ const routes = [{
         },
     },
     {
+        path: "/editaccount",
+        name: "editaccount",
+        component: () =>
+            import (
+                "../views/EditAccount.vue"
+            ),
+        beforeEnter: (to, from, next) => {
+            if (isLoggedIn()) {
+                next();
+            } else {
+                next("/auth/login");
+            }
+        },
+    },
+    {
         path: "/listrecordquiz",
         name: "listrecordquiz",
         component: () =>
