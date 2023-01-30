@@ -8,7 +8,6 @@
       <h4 style="margin-left: 3px">/ Change password</h4>
     </div>
     <v-container class="container" fluid>
-      <!-- <v-row> -->
         <v-col cols="6">
           <v-text-field
             v-model="message3"
@@ -37,58 +36,18 @@
             clearable
           ></v-text-field>
         </v-col>
-      <!-- </v-row> -->
       <v-btn class="btn" color="success" dark> Submit </v-btn>
     </v-container>
-    <!-- <v-containter class="container" fluid> -->
-      <!-- <v-row class="row"> -->
-        <!-- <v-col class="row">
-          <v-text-field
-            v-model="message3"
-            :rules="rules"
-            outlined
-            label="Old Password"
-            clearable
-          ></v-text-field>
-        </v-col>
-        <v-col class="row">
-          <v-text-field
-            v-model="message3"
-            :rules="rules"
-            outlined
-            label="New Password"
-            clearable
-          ></v-text-field>
-        </v-col>
-        <v-col class="row">
-          <v-text-field
-            v-model="message3"
-            :rules="rules"
-            outlined
-            label="Confirm Password"
-            clearable
-          ></v-text-field>
-        </v-col>
-        <v-btn class="btn" color="success" dark> Submit </v-btn> -->
-      <!-- </v-row> -->
-    <!-- </v-containter> -->
   </div>
 </template>
 
 <style scoped>
-   /* .row {
-    width: 50%;
-    margin: auto;
-  } */
 
   .btn {
     left: 20%;
     width: 7%;
   } 
 
-  .v-text-field--outlined >>> fieldset {
-    border-color: rgb(22, 153, 171);
-}
 </style>
 
 <script>

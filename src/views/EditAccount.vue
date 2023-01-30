@@ -73,11 +73,6 @@
         left: 65%;
         width: 6%;
     }
-
-    .v-text-field--outlined >>> fieldset {
-        border-color: rgb(22, 153, 171);
-    }
-
     .v-text-field--outlined {
         width: 70%;
     }
