@@ -3,8 +3,8 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         color="#E53935"
-        class="ml-1"
-        dark
+        class="ml-1 white--text"
+        :disabled="!isAdmin"
         v-bind="attrs"
         v-on="on"
         @click="disableButton($event)"
@@ -45,7 +45,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  props: ["id"],
+  props: ["id", "isAdmin"],
   data() {
     return {
       dialog: false,
@@ -82,24 +82,29 @@ export default {
 
     deleteUser() {
       try {
-        this.loading = true;
-        this.$axios
-          .delete(this.$url + `/user/delete/${this.id}`)
-          .then((res) => {
-            if (res.data.success) {
-              this.$emit("refreshData", "");
-              this.dialog = false;
-              this.loading = false;
+        if (this.isAdmin) {
+          this.loading = true;
+          this.$axios
+            .delete(this.$url + `/user/delete/${this.id}`)
+            .then((res) => {
+              if (res.data.success) {
+                this.$emit("refreshData", "");
+                this.dialog = false;
+                this.loading = false;
 
-              //call snackbar success
-              this.saveDetails("Deleted successfully", "warning", "#FFCC80");
-            }
-          })
-          .catch((error) => {
-            //snackbar error
-            this.loading = false;
-            this.saveDetails(error.message, "error", "#EF9A9A");
-          });
+                //call snackbar success
+                this.saveDetails("Deleted successfully", "warning", "#FFCC80");
+              }
+            })
+            .catch((error) => {
+              //snackbar error
+              this.loading = false;
+              this.saveDetails(error.message, "error", "#EF9A9A");
+            });
+        } else {
+          //snackbar error
+          this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
+        }
       } catch (error) {
         //snackbar error
         this.loading = false;

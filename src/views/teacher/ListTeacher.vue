@@ -3,6 +3,7 @@
     <div class="d-flex justify-space-between align-center">
       <h1 style="font-weight: 500">Teachers</h1>
       <add
+        :isAdmin="isAdmin"
         :departments="departments"
         :roles="roles"
         @refreshData="getAllTeacher()"
@@ -35,17 +36,12 @@
           ></v-text-field>
         </v-card-title>
       </template>
-      <!-- <template v-slot:[`item.name`]="{ item }">
-        <div class="p-2">
-          <v-img :src="item.name" :alt="item.name" width="100px"></v-img>
-        </div>
-      </template> -->
       <template v-slot:[`item.index`]="{ index }">
         <div>{{ index + 1 }}</div>
       </template>
       <template v-slot:[`item.firstName`]="{ item }">
         <div class="p-2">
-          <div>{{ item.firstName + item.lastName }}</div>
+          <div>{{ item.firstName + " " + item.lastName }}</div>
         </div>
       </template>
 
@@ -54,9 +50,14 @@
           :item="item"
           :departments="departments"
           :roles="roles"
+          :isAdmin="isAdmin"
           @refreshData="getAllTeacher()"
         ></edit>
-        <delete :id="item._id" @refreshData="getAllTeacher()"></delete>
+        <delete
+          :id="item._id"
+          :isAdmin="isAdmin"
+          @refreshData="getAllTeacher()"
+        ></delete>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="getAllTeacher"> Refresh </v-btn>
@@ -70,6 +71,7 @@ import { mapActions } from "vuex";
 import Add from "../../components/teacher/Add.vue";
 import Delete from "../../components/teacher/Delete.vue";
 import Edit from "../../components/teacher/Edit.vue";
+import decode from "vue-jwt-decode";
 export default {
   components: { Add, Edit, Delete },
   data: () => ({
@@ -101,12 +103,14 @@ export default {
     teachers: [],
     departments: [],
     roles: [],
+    isAdmin: false,
   }),
 
   created() {
     this.getDepartment();
     this.getRole();
     this.getAllTeacher();
+    this.decodeToken();
   },
 
   methods: {
@@ -121,6 +125,14 @@ export default {
         // color: "warning",
         timeout: 3500,
       });
+    },
+
+    decodeToken() {
+      let decoder = "";
+      decoder = decode.decode(sessionStorage.getItem("token"));
+      if (decoder.data.user.role == "ADMIN_ROLE") {
+        this.isAdmin = true;
+      }
     },
 
     getAllTeacher() {

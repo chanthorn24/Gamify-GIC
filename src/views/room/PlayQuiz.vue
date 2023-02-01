@@ -92,7 +92,9 @@
         <v-card v-if="countDown == 0" color="#0999AD">
           <v-list-item class="d-flex justify-space-between white--text">
             <div>
-              <v-list-item-title class="text-h6"> Name </v-list-item-title>
+              <v-list-item-title class="text-h6" style="width: 10vw">
+                Name
+              </v-list-item-title>
             </div>
             <div>
               <v-list-item-subtitle class="text-h6 white--text"
@@ -101,13 +103,17 @@
             </div>
           </v-list-item>
           <v-list-item
-            class="d-flex justify-space-between white--text"
+            class="d-flex justify-space-between"
             v-for="(user, i) in userInRooms"
             :key="i"
             outline
+            style="background-color: white"
           >
             <div>
-              <v-list-item-title v-text="user.name"></v-list-item-title>
+              <v-list-item-title
+                style="width: 10vw"
+                v-text="user.name"
+              ></v-list-item-title>
             </div>
             <div>
               <v-list-item-title v-text="user.score"></v-list-item-title>

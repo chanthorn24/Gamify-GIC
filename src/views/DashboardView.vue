@@ -232,6 +232,16 @@ export default {
     initialize() {
       this.socket.emit("global_user", "");
     },
+
+    snackBarLogin() {
+      if (sessionStorage.getItem("login")) {
+        sessionStorage.removeItem("login");
+        this.saveDetails("Login successfully", "success", "orange");
+      }
+    },
+  },
+  mounted() {
+    this.snackBarLogin();
   },
   created() {
     this.getTeacher();

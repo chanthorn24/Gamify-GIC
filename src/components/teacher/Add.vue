@@ -4,7 +4,8 @@
       <v-btn
         color="#0999ad"
         style="font-weight: 500"
-        dark
+        class="white--text"
+        v-if="isAdmin"
         v-bind="attrs"
         v-on="on"
         @click="disableButton($event)"
@@ -159,7 +160,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  props: ["departments", "roles"],
+  props: ["departments", "roles", "isAdmin"],
   data() {
     return {
       dialog: false,
@@ -223,8 +224,8 @@ export default {
     },
     addNewUser() {
       try {
-        if (this.user.password != this.confirm_password) {
-          // alert("Password is not match!");
+        if (this.$refs.form.validate() || !this.isAdmin) {
+          this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
         } else if (this.$refs.form.validate()) {
           this.loading = true;
 

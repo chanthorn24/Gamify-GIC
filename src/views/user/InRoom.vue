@@ -1,3 +1,82 @@
+<template>
+  <div style="background-color: #0999ab; height: 125vh">
+    <v-icon class="circle d-none d-lg-flex" style="font-size: 122px"
+      >fa-solid fa-circle</v-icon
+    >
+    <v-icon class="star d-none d-lg-flex" style="font-size: 122px"
+      >fa-solid fa-star</v-icon
+    >
+    <v-icon class="play d-none d-lg-flex" style="font-size: 122px"
+      >fa-solid fa-play</v-icon
+    >
+    <v-card
+      class="member d-flex justify-center align-center flex-row pa-8"
+      style="width: 100px"
+    >
+      <h1>{{ userInRooms.length }}</h1>
+      <v-icon style="font-size: 18px; margin-left: 6px; color: white">
+        fa-solid fa-user-tie
+      </v-icon>
+    </v-card>
+    <div
+      style="height: 100%"
+      class="d-flex flex-column align-center justify-center"
+    >
+      <div
+        style="
+          font-style: italic;
+          color: white;
+          font-size: 40px;
+          font-weight: 500;
+        "
+        class="mb-5"
+      >
+        GIC FunQuiz &nbsp;
+      </div>
+
+      <div
+        class="user_name mt-6 pa-4 d-flex justify-center flex-wrap"
+        style="overflow: auto; width: 55%; height: 300px"
+      >
+        <v-btn
+          v-for="user in userInRooms"
+          :key="user._id"
+          class="ma-1"
+          color="orange"
+          rounded
+          dark
+          >{{ user.name }}</v-btn
+        >
+      </div>
+      <v-card v-if="name" class="mt-16" width="490" style="border-radius: 10px">
+        <div class="container px-7 py-8">
+          <v-col class="d-flex justify-center align-center" cols="12">
+            <h2 style="color: #0999ab" class="mb-4">Join the game</h2>
+          </v-col>
+          <div
+            style="width: 100%"
+            class="d-flex flex-column justify-center align-center"
+          >
+            <h4 style="color: grey">
+              {{ "Hi, " + name + ". You're in!" }}
+            </h4>
+            <h4 style="color: grey">Waiting quiz start...</h4>
+
+            <v-btn
+              color="#EF5350"
+              style="width: 40%; color: white"
+              class="mt-3"
+              @click="disconnect()"
+            >
+              Exit
+            </v-btn>
+          </div>
+        </div>
+      </v-card>
+    </div>
+    <user-room v-if="!name" @refreshData="initial()"></user-room>
+  </div>
+</template>
 <script>
 import io from "socket.io-client";
 import decode from "vue-jwt-decode";
@@ -79,85 +158,6 @@ export default {
   },
 };
 </script>
-<template>
-  <div style="background-color: #0999ab; height: 125vh">
-    <v-icon class="circle d-none d-lg-flex" style="font-size: 122px"
-      >fa-solid fa-circle</v-icon
-    >
-    <v-icon class="star d-none d-lg-flex" style="font-size: 122px"
-      >fa-solid fa-star</v-icon
-    >
-    <v-icon class="play d-none d-lg-flex" style="font-size: 122px"
-      >fa-solid fa-play</v-icon
-    >
-    <v-card
-      class="member d-flex justify-center align-center flex-row pa-8"
-      style="width: 100px"
-    >
-      <h1>{{ userInRooms.length }}</h1>
-      <v-icon style="font-size: 18px; margin-left: 6px; color: white">
-        fa-solid fa-user-tie
-      </v-icon>
-    </v-card>
-    <div
-      style="height: 100%"
-      class="d-flex flex-column align-center justify-center"
-    >
-      <div
-        style="
-          font-style: italic;
-          color: white;
-          font-size: 40px;
-          font-weight: 500;
-        "
-        class="mb-5"
-      >
-        GIC FunQuiz &nbsp;
-      </div>
-
-      <div
-        class="user_name mt-6 pa-4 d-flex justify-center flex-wrap"
-        style="overflow: auto; width: 55%; height: 300px"
-      >
-        <v-btn
-          v-for="user in userInRooms"
-          :key="user._id"
-          class="ma-1"
-          color="orange"
-          rounded
-          dark
-          >{{ user.name }}</v-btn
-        >
-      </div>
-      <v-card v-if="name" class="mt-16" width="490" style="border-radius: 10px">
-        <div class="container px-7 py-8">
-          <v-col class="d-flex justify-center align-center" cols="12">
-            <h2 style="color: #0999ab" class="mb-4">Join the game</h2>
-          </v-col>
-          <div
-            style="width: 100%"
-            class="d-flex flex-column justify-center align-center"
-          >
-            <h4 style="color: grey">
-              {{ "Hi, " + name + ". You're in!" }}
-            </h4>
-            <h4 style="color: grey">Waiting quiz start...</h4>
-
-            <v-btn
-              color="#EF5350"
-              style="width: 40%; color: white"
-              class="mt-3"
-              @click="disconnect()"
-            >
-              Exit
-            </v-btn>
-          </div>
-        </div>
-      </v-card>
-    </div>
-    <user-room v-if="!name"></user-room>
-  </div>
-</template>
 <style scoped>
 .member {
   position: absolute;

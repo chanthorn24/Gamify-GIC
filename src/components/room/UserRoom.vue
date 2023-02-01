@@ -97,6 +97,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.socket.emit("in_room", this.user);
+        this.$emit("refreshData", "");
         this.socket.emit("global_user", "");
         this.dialog = false;
       }

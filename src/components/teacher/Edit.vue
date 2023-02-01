@@ -3,9 +3,9 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         color="#01579B"
-        class="mr-1"
+        class="mr-1 white--text"
         @click="disableButton($event)"
-        dark
+        :disabled="!isAdmin"
         v-bind="attrs"
         v-on="on"
       >
@@ -136,7 +136,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  props: ["item", "departments", "roles"],
+  props: ["item", "departments", "roles", "isAdmin"],
   data() {
     return {
       dialog: false,
@@ -182,7 +182,7 @@ export default {
     },
 
     updateUser() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.isAdmin) {
         this.loading = true;
         try {
           this.axios
@@ -208,6 +208,8 @@ export default {
           this.loading = false;
           this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
         }
+      } else {
+        this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
       }
     },
 

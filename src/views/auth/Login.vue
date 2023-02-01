@@ -124,14 +124,15 @@ export default {
           this.axios
             .post(this.$url + "/user/auth/login", this.user)
             .then((res) => {
-              console.log(res);
               if (res.data.success) {
                 sessionStorage.setItem("token", res.data.data);
-                sessionStorage.setItem("user", JSON.stringify(res.data.user));
+                sessionStorage.setItem("login", "success");
 
                 document.location.reload();
                 setInterval(() => {
-                  router.push({ path: "/" });
+                  router.push({
+                    path: "/",
+                  });
                 }, 3000);
                 this.loading = false;
               }
