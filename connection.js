@@ -2,7 +2,7 @@
 const axios = require("axios");
 const io = require("./index");
 const jwt = require("jsonwebtoken");
-const url = "http://localhost:3001";
+const url = "http://52.91.151.159";
 
 let users = [];
 
