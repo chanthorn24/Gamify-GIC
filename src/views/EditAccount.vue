@@ -15,10 +15,17 @@
             style="height: 100%"
           >
             <h3 class="mb-5" style="color: #0999ad">Profile Image</h3>
-            <v-avatar size="140" style="position: relative">
+            <v-avatar
+              size="140"
+              style="position: relative; border: 1px solid gray"
+            >
               <v-img
                 position="center"
-                :src="user.image ? user.image : 'ddd'"
+                :src="
+                  user.image
+                    ? user.image
+                    : 'https://th.bing.com/th/id/R.96c6aa5e2175aa803494d1b1b2cbf875?rik=32IVDXcAG9PjVQ&pid=ImgRaw&r=0'
+                "
               ></v-img>
               <v-file-input
                 style="
@@ -195,7 +202,7 @@ export default {
 
   methods: {
     //snackbar
-    ...mapActions(["showSnack"]),
+    ...mapActions(["showSnack", "saveUser"]),
     saveDetails(text, color, progressColor) {
       this.showSnack({
         text: text,
@@ -205,6 +212,9 @@ export default {
         // color: "warning",
         timeout: 3500,
       });
+    },
+    saveUserProfile() {
+      this.saveUser();
     },
 
     imageHandler() {
@@ -235,6 +245,7 @@ export default {
             //call snackbar success
             this.userLoading = false;
             this.saveDetails("Updated Successfully", "primary", "#90CAF9");
+            this.saveUserProfile();
           }
         });
     },
@@ -252,6 +263,7 @@ export default {
               this.saveImage = false;
               this.saveDetails("Updated Successfully", "primary", "#90CAF9");
               this.getUser();
+              this.saveUserProfile();
             }
           });
       } else {

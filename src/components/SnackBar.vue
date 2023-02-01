@@ -38,7 +38,7 @@ export default {
   },
   created() {
     this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "showMessage") {
+      if (mutation.type == "showMessage") {
         this.text = state.text;
         this.color = state.color;
         this.timeout = state.timeout;

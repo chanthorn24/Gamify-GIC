@@ -18,10 +18,14 @@ export default new Vuex.Store({
             state.timeout = payload.timeout;
             state.progressColor = payload.progressColor;
         },
+        refreshData() {},
     },
     actions: {
         showSnack({ commit }, payload) {
             commit("showMessage", payload);
+        },
+        saveUser({ commit }) {
+            commit("refreshData", "");
         },
     },
     getters: {

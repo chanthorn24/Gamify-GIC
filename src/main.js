@@ -23,6 +23,7 @@ Vue.config.productionTip = false;
 // global variable
 Vue.prototype.$axios = axios;
 Vue.prototype.$url = "http://localhost:3001";
+// Vue.prototype.$url = "http://35.174.205.31";
 
 new Vue({
     store,
