@@ -172,9 +172,7 @@ const routes = [{
         path: "/editaccount",
         name: "editaccount",
         component: () =>
-            import (
-                "../views/EditAccount.vue"
-            ),
+            import ("../views/EditAccount.vue"),
         beforeEnter: (to, from, next) => {
             if (isLoggedIn()) {
                 next();
@@ -356,7 +354,7 @@ const isLoggedIn = () => {
 };
 
 const router = new VueRouter({
-    mode: "history",
+    mode: "mode",
     routes,
 });
 
