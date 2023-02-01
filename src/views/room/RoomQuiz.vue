@@ -289,7 +289,7 @@ export default {
     this.getRoomType();
     this.getRoomById();
 
-    this.socket = io("http://localhost:3001/", { transports: ["websocket"] });
+    this.socket = io(this.$url, { transports: ["websocket"] });
     this.socket.on("in_room", (msg) => {
       if (this.id == msg.room) {
         this.userInRooms = msg.data;

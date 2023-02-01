@@ -354,7 +354,7 @@ const isLoggedIn = () => {
 };
 
 const router = new VueRouter({
-    mode: "mode",
+    mode: "hash",
     routes,
 });
 

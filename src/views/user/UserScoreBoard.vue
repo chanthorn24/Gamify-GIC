@@ -81,7 +81,7 @@ export default {
   },
 
   created() {
-    this.socket = io("http://localhost:3001/", { transports: ["websocket"] });
+    this.socket = io(this.$url, { transports: ["websocket"] });
     this.socket.on("in_room", (msg) => {
       if (msg.room == this.$route.params.id) {
         this.userInRooms = msg.data;

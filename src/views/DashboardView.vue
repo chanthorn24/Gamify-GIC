@@ -248,7 +248,7 @@ export default {
     this.getRoom();
     this.getDepartment();
 
-    this.socket = io("http://localhost:3001/", { transports: ["websocket"] });
+    this.socket = io(this.$url, { transports: ["websocket"] });
     this.socket.on("global_user", (msg) => {
       this.numOfGlobal = msg.length;
     });
