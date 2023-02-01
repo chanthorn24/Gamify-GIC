@@ -81,11 +81,11 @@ const update = async(req, res) => {
         gender,
         department_id,
         user_role_id,
-        password,
+        old_password,
         new_password,
     } = req.body;
     try {
-        const user = await Users.findById(id, { password: 0 });
+        const user = await Users.findById(id);
 
         if (!user || user.is_delete) {
             throw "Data not exist!";
@@ -100,8 +100,8 @@ const update = async(req, res) => {
         if (user_role_id) user.user_role_id = user_role_id;
 
         let is_match = false;
-        if (password) {
-            is_match = await bcrypt.compare(password, user.password);
+        if (old_password) {
+            is_match = await bcrypt.compare(old_password, user.password);
 
             if (!is_match) {
                 throw "Old password is incorrect";
@@ -123,12 +123,12 @@ const update = async(req, res) => {
                         res.status(400).json({ success: false, message: error });
                     }
                 });
+        } else {
+            //save data to database
+            await user.save();
+
+            res.status(200).json({ success: true, message: "Updated successfully!" });
         }
-
-        //save data to database
-        await user.save();
-
-        res.status(200).json({ success: true, message: "Updated successfully!" });
     } catch (error) {
         res.status(400).json({ success: false, message: error });
     }

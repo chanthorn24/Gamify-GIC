@@ -45,14 +45,14 @@ const connect = (socket) => {
 
     //room user play
     socket.on("in_room", (msg) => {
-        console.log("hello");
+        // console.log("hello");
 
         // socket.join(msg.room_id);
         // console.log(socket.id, "Socket\n");
         if (msg.token) {
             try {
                 const decode = jwt.verify(msg.token, process.env.JWT_SECRET);
-                console.log(decode.data.user);
+                // console.log(decode.data.user);
                 users[socket.id] = decode.data.user;
                 const data = {
                     status: 1,
@@ -150,7 +150,7 @@ const connect = (socket) => {
                 data: msg.data,
                 room: msg.room_id,
             };
-            console.log(msg);
+            // console.log(msg);
             io.io.emit("play", data);
         }
     });
