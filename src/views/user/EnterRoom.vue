@@ -11,7 +11,7 @@ export default {
       loading: false,
 
       //data
-      pin: "",
+      pin: this.$route.query.pin || "",
 
       //rule form validate
       nameRules: [(v) => !!v || "Field is required"],

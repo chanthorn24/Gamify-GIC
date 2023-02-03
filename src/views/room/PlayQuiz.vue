@@ -43,10 +43,10 @@
           </v-list-item>
 
           <v-list-item>
-            User answer(s):
-            <h2 style="color: orange" class="ml-2">
+            User answer(s):<span class="ml-1">{{ userInRooms.length }}</span>
+            <!-- <h2 style="color: orange" class="ml-2">
               100 / {{ userInRooms.length }}
-            </h2>
+            </h2> -->
           </v-list-item>
         </v-card>
         <br />
@@ -196,17 +196,6 @@
                     </v-list-item-icon>
                   </v-list-item>
                 </v-list-group>
-                <!-- <div class="d-flex mt-3">
-                  <edit-question
-                    @refreshData="getRoomById()"
-                    :question_types="question_types"
-                    :questionOne="question"
-                  ></edit-question>
-                  <delete-question
-                    @refreshData="getRoomById()"
-                    :id="question._id"
-                  ></delete-question>
-                </div> -->
               </div>
             </div>
             <div class="px-5">
@@ -272,28 +261,6 @@ export default {
       }
     },
 
-    // getQuestionType() {
-    //   try {
-    //     this.axios.get(this.$url + "/question/type/get-all").then((res) => {
-    //       if (res.data.success) {
-    //         this.question_types = res.data.data;
-    //       }
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    // getRoomType() {
-    //   try {
-    //     this.axios.get(this.$url + "/room/type/get-all").then((res) => {
-    //       if (res.data.success) {
-    //         this.room_types = res.data.data;
-    //       }
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
     getRoomById() {
       this.questions = [];
       this.answers = [];

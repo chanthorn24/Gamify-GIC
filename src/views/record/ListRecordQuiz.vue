@@ -32,8 +32,11 @@
       <template v-slot:[`item._id`]="{ index }">
         <div>{{ index + 1 }}</div>
       </template>
-      <template v-slot:[`item.actions`]="{}">
-        <router-link to="/viewrecord" style="text-decoration: none">
+      <template v-slot:[`item.actions`]="{ item }">
+        <router-link
+          :to="'/viewrecord/' + item._id"
+          style="text-decoration: none"
+        >
           <v-btn small color="success"> view Details </v-btn>
         </router-link>
       </template>
@@ -65,8 +68,7 @@ export default {
       },
       { text: "Room Type", value: "room_type_id.name" },
       { text: "Questions(s)", value: "question_id.length" },
-      { text: "Player(s)", value: "play" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false, align: "end" },
     ],
   }),
 
@@ -98,7 +100,6 @@ export default {
             if (res.data.success) {
               this.rooms = res.data.data;
               this.loading = false;
-              console.log(this.rooms);
             }
           })
           .catch((error) => {

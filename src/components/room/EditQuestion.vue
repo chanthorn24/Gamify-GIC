@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import MultiQuestion from "../../components/MultiQuestion.vue";
 import TrueFalse from "../../components/TrueFalse.vue";
 export default {
@@ -139,6 +140,19 @@ export default {
   },
 
   methods: {
+    //snackbar
+    ...mapActions(["showSnack"]),
+    saveDetails(text, color, progressColor) {
+      this.showSnack({
+        text: text,
+        color: color,
+        progressColor: progressColor,
+        // color: "error",
+        // color: "warning",
+        timeout: 3500,
+      });
+    },
+
     myFunctionClick: function () {
       var hide = this.$el.querySelector("#hide");
       hide.style.display = "block";
@@ -156,11 +170,20 @@ export default {
               this.$emit("refreshData", "");
               this.loading = false;
               this.dialog = false;
+
+              //call snackbar success
+              this.saveDetails("Updated Successfully", "primary", "#90CAF9");
             }
+          })
+          .catch((error) => {
+            //snackbar error
+            this.loading = false;
+            this.saveDetails(error.message, "error", "#EF9A9A");
           });
       } catch (error) {
+        //snackbar error
         this.loading = false;
-        console.log(error);
+        this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
       }
     },
 

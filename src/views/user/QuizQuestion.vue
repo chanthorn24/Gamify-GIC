@@ -29,7 +29,9 @@
       class="answer d-flex justify-center align-center flex-column flex-row pa-8 rounded-circle"
       style="width: 110px; height: 110px"
     >
-      <div style="font-size: 60px; color: #228895; font-weight: 500">0</div>
+      <div style="font-size: 60px; color: #228895; font-weight: 500">
+        {{ answerTotal }}
+      </div>
       <div style="font-size: 20px; font-style: oblique; color: #228895">
         Answer(s)
       </div>
@@ -81,17 +83,25 @@
 </template>
 
 <script>
+import io from "socket.io-client";
 export default {
   props: ["question", "user"],
   data() {
     return {
       loading: false,
       countDown: this.question.time,
+      answerTotal: 0,
     };
   },
 
   created() {
     this.countDownTimer();
+    this.socket = io(this.$url, { transports: ["websocket"] });
+    this.socket.on("answer", (msg) => {
+      if (this.user.room_id == msg.room) {
+        this.answerTotal++;
+      }
+    });
   },
 
   methods: {
@@ -105,6 +115,7 @@ export default {
         console.log(this.user);
         this.axios.post(this.$url + "/answer/create", this.user).then((res) => {
           console.log(res);
+          this.socket.emit("answer", { room_id: this.$route.params.id });
         });
         // event.target.classList.toggle("selected");
         console.log(event.currentTarget.id);

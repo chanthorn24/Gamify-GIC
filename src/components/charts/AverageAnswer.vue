@@ -10,7 +10,7 @@
     </v-col>
     <v-col cols="12" lg="6" sm="12" class="pa-6">
       <div class="pa-10" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px">
-        Average Score: 100
+        Average Score: {{ averageTotal }} %
       </div>
     </v-col>
   </v-row>
@@ -18,15 +18,16 @@
 
 <script>
 export default {
+  props: ["averageTotal"],
   data() {
     return {
-      series: [45, 55],
+      series: [this.averageTotal * 100, 100 - this.averageTotal * 100],
       chartOptions: {
         chart: {
           width: 380,
           type: "pie",
         },
-        colors: ["#F44336", "#0999AD"],
+        colors: ["#0999AD", "#F44336"],
         labels: ["Correct", "Wrong"],
         responsive: [
           {
@@ -43,6 +44,9 @@ export default {
         ],
       },
     };
+  },
+  created() {
+    console.log(this.series);
   },
 };
 </script>

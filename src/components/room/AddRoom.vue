@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: ["roomTypes", "userId"],
   data() {
@@ -111,24 +112,48 @@ export default {
   created() {},
 
   methods: {
+    //snackbar
+    ...mapActions(["showSnack"]),
+    saveDetails(text, color, progressColor) {
+      this.showSnack({
+        text: text,
+        color: color,
+        progressColor: progressColor,
+        // color: "error",
+        // color: "warning",
+        timeout: 3500,
+      });
+    },
+
     addRoom() {
       try {
         if (this.$refs.form.validate()) {
           this.loading = true;
-          this.axios.post(this.$url + "/room/create", this.room).then((res) => {
-            if (res.data.success) {
-              this.$emit("refreshData", "");
-              this.loading = false;
-              this.dialog = false;
+          this.axios
+            .post(this.$url + "/room/create", this.room)
+            .then((res) => {
+              if (res.data.success) {
+                this.$emit("refreshData", "");
+                this.loading = false;
+                this.dialog = false;
 
-              //reset form
-              this.$refs.form.reset();
-            }
-          });
+                //call snackbar success
+                this.saveDetails("Created Successfully", "success", "#A5D6A7");
+
+                //reset form
+                this.$refs.form.reset();
+              }
+            })
+            .catch((error) => {
+              //snackbar error
+              this.loading = false;
+              this.saveDetails(error.message, "error", "#EF9A9A");
+            });
         }
       } catch (error) {
+        //snackbar error
         this.loading = false;
-        console.log(error);
+        this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
       }
     },
 

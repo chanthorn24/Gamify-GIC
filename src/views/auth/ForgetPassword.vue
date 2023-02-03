@@ -59,7 +59,7 @@
                     color="#0999ad"
                     width="200"
                     height="40"
-                    dark
+                    style="color: white"
                     ><div style="font-size: medium">Submit</div></v-btn
                   >
                 </div>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -93,13 +94,49 @@ export default {
   },
 
   methods: {
+    //snackbar
+    ...mapActions(["showSnack"]),
+    saveDetails(text, color, progressColor) {
+      this.showSnack({
+        text: text,
+        color: color,
+        progressColor: progressColor,
+        // color: "error",
+        // color: "warning",
+        timeout: 3500,
+      });
+    },
+
     login() {
       try {
         if (this.$refs.form.validate()) {
           this.loading = true;
+
+          this.axios
+            .post(this.$url + "/user/auth/reset", this.user)
+            .then((res) => {
+              if (res.data.success) {
+                this.loading = false;
+                //call snackbar success
+                this.saveDetails(
+                  "Request reset Successfully",
+                  "success",
+                  "#A5D6A7"
+                );
+
+                this.$refs.form.reset();
+              }
+            })
+            .catch((error) => {
+              //snackbar error
+              this.loading = false;
+              this.saveDetails(error.message, "error", "#EF9A9A");
+            });
         }
       } catch (error) {
-        console.log(error);
+        //snackbar error
+        this.loading = false;
+        this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
       }
     },
   },

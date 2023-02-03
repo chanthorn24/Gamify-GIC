@@ -139,7 +139,11 @@ export default {
             })
             .catch((error) => {
               this.loading = false;
-              this.saveDetails(error.message, "error", "#EF9A9A");
+              this.saveDetails(
+                "Email or password incorrect",
+                "error",
+                "#EF9A9A"
+              );
             });
         }
       } catch (error) {

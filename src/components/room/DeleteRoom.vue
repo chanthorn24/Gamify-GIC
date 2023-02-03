@@ -31,6 +31,8 @@
           <v-btn
             width="18vw"
             class="ml-2"
+            :loading="loading"
+            :disabled="loading"
             style="color: white; background-color: red"
             @click="deleteUser()"
             >Delete</v-btn
@@ -49,6 +51,7 @@ export default {
     return {
       dialog: false,
       target: [],
+      loading: false,
     };
   },
   watch: {
@@ -80,20 +83,26 @@ export default {
 
     deleteUser() {
       try {
+        this.loading = true;
         this.$axios
-          .delete(this.$url + `/question/delete/${this.id}`)
+          .delete(this.$url + `/room/delete/${this.id}`)
           .then((res) => {
             if (res.data.success) {
               this.$emit("refreshData", "");
               this.dialog = false;
+              this.loading = false;
+              //call snackbar success
               this.saveDetails("Deleted successfully", "warning", "#FFCC80");
             }
           })
           .catch((error) => {
             //snackbar error
+            this.loading = false;
             this.saveDetails(error.message, "error", "#EF9A9A");
           });
       } catch (error) {
+        //snackbar error
+        this.loading = false;
         this.saveDetails("Oops, something went wrong", "error", "#EF9A9A");
       }
     },

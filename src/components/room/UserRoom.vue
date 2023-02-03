@@ -84,9 +84,7 @@ export default {
 
     this.socket = io(this.$url, { transports: ["websocket"] });
     this.socket.on("in_room", (msg) => {
-      console.log(msg, "msg Parent");
       if (msg.token) {
-        console.log(msg.token);
         localStorage.setItem("token" + this.$route.params.id, msg.token);
       }
     });

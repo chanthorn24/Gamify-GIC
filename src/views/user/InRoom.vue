@@ -74,7 +74,7 @@
         </div>
       </v-card>
     </div>
-    <user-room v-if="!name" @refreshData="initial()"></user-room>
+    <user-room v-if="!name" @refreshData="refresh()"></user-room>
   </div>
 </template>
 <script>
@@ -108,9 +108,7 @@ export default {
   created() {
     this.socket = io(this.$url, { transports: ["websocket"] });
     this.socket.on("in_room", (msg) => {
-      console.log(msg, "msg Parent");
       if (msg.token) {
-        console.log(msg.token);
         localStorage.setItem("token" + this.$route.params.id, msg.token);
       } else if (msg.room == this.$route.params.id) {
         this.userInRooms = msg.data;
@@ -125,7 +123,6 @@ export default {
             }
           });
         }
-        console.log(this.userInRooms);
       }
     });
     this.initial();
@@ -143,17 +140,29 @@ export default {
         this.decoder = decode.decode(
           localStorage.getItem("token" + this.$route.params.id)
         );
-        // console.log(decoder.exp);
+        // console.log(decoder);
         if (this.decoder.exp < (new Date().getTime() + 1) / 1000) {
           localStorage.removeItem("token" + this.$route.params.id);
           this.socket.emit("in_room", this.user);
         } else {
-          console.log(this.decoder);
+          console.log(this.decoder, "DECODE");
           this.socket.emit("in_room", {
             token: localStorage.getItem("token" + this.$route.params.id),
           });
         }
       }
+    },
+
+    refresh() {
+      const interval = setInterval(() => {
+        console.log(
+          localStorage.getItem("token" + this.$route.params.id),
+          "Token"
+        );
+        this.initial();
+        this.$emit("refreshData", "");
+        clearInterval(interval);
+      }, 4000);
     },
   },
 };

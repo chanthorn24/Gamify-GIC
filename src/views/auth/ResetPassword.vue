@@ -44,7 +44,7 @@
                     outlined
                     v-model="user.password"
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                    label="Confirm password"
+                    label="New password"
                     :rules="passwordRules"
                     :type="show ? 'text' : 'password'"
                     @click:append="show = !show"
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -94,6 +95,7 @@ export default {
       user: {
         confirm_password: "",
         password: "",
+        token: this.$route.query.verify,
       },
 
       show: false,
@@ -102,6 +104,19 @@ export default {
   },
 
   methods: {
+    //snackbar
+    ...mapActions(["showSnack"]),
+    saveDetails(text, color, progressColor) {
+      this.showSnack({
+        text: text,
+        color: color,
+        progressColor: progressColor,
+        // color: "error",
+        // color: "warning",
+        timeout: 3500,
+      });
+    },
+
     //rule match password
     passwordMatch: function () {
       if (!this.user.confirm_password) {
@@ -115,12 +130,35 @@ export default {
       try {
         if (this.$refs.form.validate()) {
           this.loading = true;
+          this.axios
+            .post(this.$url + "/user/auth/update", this.user)
+            .then((res) => {
+              if (res.data.success) {
+                this.loading = false;
+                this.saveDetails("Updated Successfully", "success", "#A5D6A7");
+                this.$refs.form.reset();
+              } else {
+                this.saveDetails(
+                  "Oops! something went wrong",
+                  "error",
+                  "#EF9A9A"
+                );
+              }
+            })
+            .catch((error) => {
+              this.loading = false;
+
+              this.saveDetails(error.message, "error", "#EF9A9A");
+            });
         }
       } catch (error) {
-        console.log(error);
+        this.loading = false;
+        this.saveDetails("Oops! something went wrong", "error", "#EF9A9A");
       }
     },
   },
+
+  created() {},
 };
 </script>
 

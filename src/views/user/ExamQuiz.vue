@@ -1,6 +1,10 @@
 <template>
   <div>
-    <in-room v-if="component == 1" :user="user"></in-room>
+    <in-room
+      v-if="component == 1"
+      :user="user"
+      @refreshData="initial()"
+    ></in-room>
     <quiz-true-false
       v-if="
         component == 2 &&
@@ -44,6 +48,8 @@ export default {
         room_id: this.$route.params.id,
         user_id: "",
       },
+
+      answerTotal: 0,
     };
   },
 
@@ -56,6 +62,7 @@ export default {
         console.log(msg, "Question");
       }
     });
+
     this.initial();
   },
 

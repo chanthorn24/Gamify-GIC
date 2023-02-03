@@ -198,7 +198,7 @@ const routes = [{
         },
     },
     {
-        path: "/viewrecord",
+        path: "/viewrecord/:id",
         name: "viewrecord",
         component: () =>
             import (
