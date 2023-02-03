@@ -3,6 +3,7 @@ const axios = require("axios");
 const io = require("./index");
 const jwt = require("jsonwebtoken");
 const url = "http://localhost:3001";
+// const url = "http://52.91.151.159";
 
 let users = [];
 
@@ -153,6 +154,16 @@ const connect = (socket) => {
             // console.log(msg);
             io.io.emit("play", data);
         }
+    });
+
+    socket.on("answer", (msg) => {
+        let data = {
+            data: 1,
+            room: msg.room_id,
+        };
+        console.log(msg);
+
+        io.io.emit("answer", data);
     });
 
     //global user join room

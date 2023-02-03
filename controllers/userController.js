@@ -2,6 +2,7 @@ const Users = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
+const { json } = require("body-parser");
 
 const getAll = async(req, res) => {
     try {
@@ -197,6 +198,36 @@ const login = async(req, res) => {
     }
 };
 
+const changeReset = async(req, res) => {
+    const { token, password } = req.body;
+    try {
+        const decode = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await Users.find({ email: decode.data.user.email });
+
+        if (!user) {
+            throw "Data is not exist";
+        }
+
+        if (user[0].password == decode.data.user.password) {
+            bcrypt
+                .hash(password, parseInt(process.env.SALT_ROUND))
+                .then(async(hash) => {
+                    user[0].password = hash;
+                    await user[0].save();
+                    return res
+                        .status(200)
+                        .json({ success: true, message: "Update successfully" });
+                });
+        } else {
+            return res
+                .status(200)
+                .json({ success: false, message: "Something went wrong!" });
+        }
+    } catch (error) {
+        res.status(400).json({ success: false, message: error });
+    }
+};
+
 const resetPassword = async(req, res) => {
     const { email } = req.body;
     try {
@@ -253,7 +284,7 @@ const resetPassword = async(req, res) => {
                         </div>
                         <div style=" display: flex; flex-direction: column; align-items: center;">
                             ` +
-            `<a href="http://localhost:4200/password/reset?verify=` +
+            `<a href="http://localhost:8080/#/auth/reset-password?verify=` +
             token +
             `">
                                 <button style="padding: 10px 50px; border-radius: 10px; background-color: #0999AD; color: white;" type="button">
@@ -304,4 +335,5 @@ module.exports = {
     deleteOne,
     login,
     resetPassword,
+    changeReset,
 };

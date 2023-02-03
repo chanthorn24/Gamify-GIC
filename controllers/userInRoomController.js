@@ -29,7 +29,25 @@ const getByRoom = async(req, res) => {
     const { id } = req.params;
 
     try {
-        const user_in_room = await User_in_rooms.find({ room_id: id, status: 1 });
+        const user_in_room = await User_in_rooms.find({
+            room_id: id,
+            status: 1,
+        }).sort({ score: -1 });
+
+        if (!user_in_room || user_in_room.is_delete) {
+            throw new Error("Data Not Found");
+        }
+
+        res.status(200).json({ success: true, data: user_in_room });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error });
+    }
+};
+const getRoom = async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user_in_room = await User_in_rooms.find({ room_id: id });
 
         if (!user_in_room || user_in_room.is_delete) {
             throw new Error("Data Not Found");
@@ -99,4 +117,12 @@ const deleteOne = async(req, res) => {
     }
 };
 
-module.exports = { create, getAll, getById, update, deleteOne, getByRoom };
+module.exports = {
+    create,
+    getAll,
+    getById,
+    update,
+    deleteOne,
+    getByRoom,
+    getRoom,
+};

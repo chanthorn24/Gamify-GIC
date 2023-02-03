@@ -10,5 +10,6 @@ router.put("/update/:id", userController.update);
 router.delete("/delete/:id", userController.deleteOne);
 router.post("/auth/login", userController.login);
 router.post("/auth/reset", userController.resetPassword);
+router.post("/auth/update", userController.changeReset);
 
 module.exports = router;

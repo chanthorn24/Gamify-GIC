@@ -32,13 +32,13 @@ const getById = async(req, res) => {
 const create = async(req, res) => {
     const { question_id, name, room_id, user_id, score } = req.body;
     try {
-        console.log(req.body);
         const data = {
             question_id: question_id,
             name: name.toString(),
             score: 0,
             is_correct: 0,
         };
+        let increase = 0;
 
         const history = {
             user_id: user_id,
@@ -50,13 +50,15 @@ const create = async(req, res) => {
         if (question.correct_answer == name) {
             data.is_correct = 1;
             data.score = score;
+            increase++;
         }
-        console.log(question.correct_answer, name);
+        // console.log(question.correct_answer, name);
 
         const player = await UserInRooms.findById(user_id);
-        console.log(player, user_id);
+        // console.log(player, user_id);
         player.score = data.score + player.score;
-        console.log(player.score, data.score);
+        player.totalCorrect = player.totalCorrect + increase;
+        // console.log(player.score, data.score);
         await player.save();
 
         const answers = await Answer.create(data);

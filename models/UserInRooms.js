@@ -19,6 +19,10 @@ const userInRoomSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    totalCorrect: {
+        type: Number,
+        default: 0,
+    },
     status: {
         type: Boolean,
         default: 1,

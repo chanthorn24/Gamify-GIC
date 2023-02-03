@@ -19,7 +19,26 @@ const getByUser = async(req, res) => {
     const { id } = req.params;
 
     try {
-        const room = await Rooms.find({ user_id: id }).populate([{
+        const room = await Rooms.find({ user_id: id, hidden: false }).populate([{
+            path: "room_type_id",
+            match: { is_delete: false },
+            select: { _id: 1, name: 1 },
+        }, ]);
+
+        if (!room || room.is_delete) {
+            throw new Error("Room not found");
+        }
+
+        res.status(200).json({ success: true, data: room });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error });
+    }
+};
+const getHidden = async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        const room = await Rooms.find({ user_id: id, hidden: true }).populate([{
             path: "room_type_id",
             match: { is_delete: false },
             select: { _id: 1, name: 1 },
@@ -105,8 +124,7 @@ const create = async(req, res) => {
 
 const update = async(req, res) => {
     const { id } = req.params;
-    const { name, room_type_id, image, status } = req.body;
-    console.log(name, room_type_id, image);
+    const { name, room_type_id, image, status, hidden } = req.body;
     try {
         const room = await Rooms.findById(id);
 
@@ -120,6 +138,7 @@ const update = async(req, res) => {
         if (room_type_id) room.room_type_id = room_type_id;
         if (image) room.image = image;
         if (status) room.status = !room.status;
+        if (hidden) room.hidden = !room.hidden;
 
         // save data
         await room.save();
@@ -174,4 +193,5 @@ module.exports = {
     deleteOne,
     joinRoom,
     getByUser,
+    getHidden,
 };

@@ -32,6 +32,10 @@ const roomSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    hidden: {
+        type: Boolean,
+        default: false,
+    },
     is_delete: {
         type: Boolean,
         default: false,
