@@ -26,8 +26,8 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$url = "http://52.91.151.159";
 
 new Vue({
-    store,
-    router,
-    vuetify,
-    render: (h) => h(App),
+  store,
+  router,
+  vuetify,
+  render: (h) => h(App),
 }).$mount("#app");

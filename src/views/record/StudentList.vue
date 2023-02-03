@@ -20,6 +20,10 @@
         <div>{{ index + 1 }}</div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
+        <delete-room-user
+          :id="item._id"
+          @refreshData="$emit('refreshData', '')"
+        ></delete-room-user>
         <!-- <v-btn small color="primary">
           <i class="fa-sharp fa-solid fa-envelope"></i>
           <div>send mail</div>
@@ -36,10 +40,11 @@
 </template>
 
 <script>
+import DeleteRoomUser from "@/components/Record/DeleteRoomUser.vue";
 import { mapActions } from "vuex";
 import DetailQuiz from "./DetailQuiz.vue";
 export default {
-  components: { DetailQuiz },
+  components: { DetailQuiz, DeleteRoomUser },
   props: ["students"],
   data() {
     return {

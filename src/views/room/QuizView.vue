@@ -173,10 +173,7 @@
                     <delete-room :id="room._id"></delete-room>
                   </v-btn>
                   <copy-to-clipboard
-                    :text="
-                      'http://localhost:8080/#/room/enter?pin=' +
-                      String(room.pin)
-                    "
+                    :text="$url + '/#/room/enter/' + String(room.pin)"
                     @copy="handleCopy"
                   >
                     <v-btn icon>

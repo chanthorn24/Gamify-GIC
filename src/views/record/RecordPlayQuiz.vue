@@ -97,7 +97,11 @@
         </v-card>
       </v-col>
     </v-row>
-    <student-list v-if="room" :students="students"></student-list>
+    <student-list
+      v-if="room"
+      :students="students"
+      @refreshData="getStudent()"
+    ></student-list>
   </div>
 </template>
 
