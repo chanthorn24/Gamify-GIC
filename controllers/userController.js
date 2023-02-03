@@ -238,7 +238,7 @@ const changeReset = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { email } = req.body;
   try {
-    const url = "http://52.91.151.159";
+    const url = "http://gamify-itc.surge.sh";
     // const url = "http://localhost:3001";
     const user = await Users.findOne({ email: email }).populate([
       {
