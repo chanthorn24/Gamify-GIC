@@ -32,9 +32,10 @@ const getByRoom = async(req, res) => {
         const user_in_room = await User_in_rooms.find({
             room_id: id,
             status: 1,
+            is_delete: false,
         }).sort({ score: -1 });
 
-        if (!user_in_room || user_in_room.is_delete) {
+        if (!user_in_room) {
             throw new Error("Data Not Found");
         }
 
@@ -47,9 +48,12 @@ const getRoom = async(req, res) => {
     const { id } = req.params;
 
     try {
-        const user_in_room = await User_in_rooms.find({ room_id: id });
+        const user_in_room = await User_in_rooms.find({
+            room_id: id,
+            is_delete: false,
+        });
 
-        if (!user_in_room || user_in_room.is_delete) {
+        if (!user_in_room) {
             throw new Error("Data Not Found");
         }
 
